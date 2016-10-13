@@ -1,17 +1,10 @@
 <resources>
     <string name="app_name">Wikiart</string>
-    <string-array name="image_ids">
-        <item>@drawable/image_1</item>
-        <item>@drawable/image_2</item>
-        <item>@drawable/image_3</item>
-        <item>@drawable/image_4</item>
-        <item>@drawable/image_1</item>
-        <item>@drawable/image_2</item>
-        <item>@drawable/image_3</item>
-        <item>@drawable/image_4</item>
-        <item>@drawable/image_1</item>
-        <item>@drawable/image_2</item>
-        <item>@drawable/image_3</item>
-        <item>@drawable/image_4</item>
-    </string-array>
+    <string name="db_name">wiki_art_db</string>
+    <string name="db_version">1</string>
+    <string name="db_path">data/data/com.art.museum.wikiart/databases/</string>
+    <string name="table_name">art</string>
+   <!-- <array name="image_ids">
+
+    </array> -->
 </resources>

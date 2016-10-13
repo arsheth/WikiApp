@@ -1,0 +1,8 @@
+i=1
+for oldname in *
+do
+	#newname=`echo $oldname | sed -e 's/-/_/g'`
+	newname="$i.jpg"
+	i=$((i+1))
+	mv "$oldname" "$newname"
+done
