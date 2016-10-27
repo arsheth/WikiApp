@@ -12,7 +12,7 @@
         android:layout_gravity="center"
         android:scaleType="fitCenter" />
 
-    <TextView
+   <!-- <TextView
         android:id="@+id/title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -20,5 +20,5 @@
         android:background="#00000c"
         android:padding="10dp"
         android:textColor="#fff"
-        android:textSize="20dp" />
+        android:textSize="20dp" /> -->
 </FrameLayout>

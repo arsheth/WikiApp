@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Wikiart</string>
+    <string name="app_name">Art Browse</string>
     <string name="db_name">wiki_art_db</string>
     <string name="db_version">1</string>
     <string name="db_path">data/data/com.art.museum.wikiart/databases/</string>

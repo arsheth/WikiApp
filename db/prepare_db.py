@@ -17,7 +17,7 @@ try:
 
 	fo = open("wikiart.csv", "r")
 	line = fo.readline()
-	i=1;
+	i=0;
 	while line:
 		line = fo.readline()
     	

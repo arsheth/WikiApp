@@ -5,31 +5,17 @@ import android.content.SharedPreferences;
 import android.database.SQLException;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.widget.GridView;
-import android.os.AsyncTask;
-
-import java.io.BufferedInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
+
 import java.util.ArrayList;
 import android.content.Intent;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import com.art.museum.data.DataStore;
-
-import android.graphics.BitmapFactory;
-import android.graphics.Bitmap;
-import java.net.URL;
-import java.net.HttpURLConnection;
 import android.util.Log;
-
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.GridLayoutManager;
 
 public class MainActivity extends AppCompatActivity {
 
-    private GridView gridView;
-    private GridViewAdapter gridAdapter;
     private DataStore dataStore;
 
     @Override
@@ -40,42 +26,38 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences sharedPreferences = getSharedPreferences(Constants.PREFS_NAME, Context.MODE_PRIVATE);
         boolean isFirstTime = sharedPreferences.getBoolean(Constants.FIRST_TIME, true);
 
-       //if (isFirstTime) {
+       if (isFirstTime) {
             try {
                 dataStore.createDataBase();
-                Log.d("first time database","created");
+                //Log.d("first time database","created");
             } catch (IOException e) {
                 e.printStackTrace();
             }
             SharedPreferences.Editor editor = sharedPreferences.edit();
             editor.putBoolean(Constants.FIRST_TIME, false);
             editor.commit();
-       // }
+        }
         try {
             dataStore.openDataBase();
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
-        gridView = (GridView) findViewById(R.id.gridView);
-        gridAdapter = new GridViewAdapter(this, R.layout.grid_item_layout, getData());
-        gridView.setAdapter(gridAdapter);
+        RecyclerView recyclerView = (RecyclerView)findViewById(R.id.card_recycler_view);
+        recyclerView.setHasFixedSize(true);
+        RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getApplicationContext(),3);
+        recyclerView.setLayoutManager(layoutManager);
 
-        gridView.setOnItemClickListener(new OnItemClickListener() {
-            public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-                ImageItem item = (ImageItem) parent.getItemAtPosition(position);
-                try {
-                    String url = item.getLink().toString();
-                    url = url.substring(0,14) + url.substring(15);
-                    new DownloadImage(MainActivity.this).execute(url);
-                }
-                catch (Exception e){
-                    e.printStackTrace();
-                    Log.e("Image Fetch Exception:",""+item.getLink());
-                }
-
+        ArrayList<ImageItem> data = getData();
+        GridAdapter adapter = new GridAdapter(getApplicationContext(), data, new GridAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(String url) {
+                Intent intent = new Intent(MainActivity.this, DetailsActivity.class);
+                intent.putExtra("link",url);
+                startActivity(intent);
             }
         });
+        recyclerView.setAdapter(adapter);
     }
 
     /**
@@ -85,62 +67,5 @@ public class MainActivity extends AppCompatActivity {
         ArrayList<ImageItem> imageItems = new ArrayList<ImageItem>();
         imageItems = dataStore.getImages();
         return imageItems;
-    }
-
-    private class DownloadImage extends AsyncTask<String, Void, Bitmap> {
-        AppCompatActivity activity;
-
-        public DownloadImage(AppCompatActivity activity){
-            this.activity = activity;
-        }
-
-        @Override
-        protected Bitmap doInBackground(String... urls) {
-
-            // params comes from the execute() call: params[0] is the url.
-            try {
-                return downloadUrl(urls[0]);
-            } catch (IOException e) {
-                return null;
-            }
-        }
-
-        @Override
-        protected void onPostExecute(Bitmap result) {
-            Intent intent = new Intent(activity, DetailsActivity.class);
-
-            ByteArrayOutputStream stream = new ByteArrayOutputStream();
-            result.compress(Bitmap.CompressFormat.JPEG, 100, stream);
-            byte[] bytes = stream.toByteArray();
-
-            intent.putExtra("title", "");
-            intent.putExtra("image", bytes);
-
-            //Start details activity
-            activity.startActivity(intent);
-        }
-
-        private Bitmap downloadUrl(String myurl) throws IOException {
-            HttpURLConnection conn = null;
-            try {
-                URL url = new URL(myurl);
-                conn = (HttpURLConnection) url.openConnection();
-                conn.connect();
-                InputStream is = new BufferedInputStream(conn.getInputStream());
-                Bitmap image = BitmapFactory.decodeStream(is);
-                return image;
-
-            }
-            catch(Exception e){
-                e.printStackTrace();
-                Log.e("Image Fetch Exception: ",""+myurl);
-                return null;
-            }
-            finally {
-                if(conn != null){
-                    conn.disconnect();
-                }
-            }
-        }
     }
 }

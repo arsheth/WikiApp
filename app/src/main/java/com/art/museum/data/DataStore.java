@@ -99,25 +99,21 @@ public class DataStore extends SQLiteOpenHelper {
 
     public ArrayList<ImageItem> getImages() {
         ArrayList<ImageItem> itemList = new ArrayList<ImageItem>();
-        Resources res = context.getResources();
         int result = 0;
-        int i=1;
-        while (i < 400) {
-            String selectQuery = "SELECT idx, name, link  FROM "+TABLE_NAME+" WHERE idx >=  " + i + " ORDER BY idx ASC LIMIT 100";
+        int i=0;
+        while (i < 10000) {
+            String selectQuery = "SELECT idx, name, link, rank  FROM "+TABLE_NAME+" WHERE rank >=  " + i + " ORDER BY rank ASC LIMIT 100";
             Cursor cursor = myDataBase.rawQuery(selectQuery, null);
             result = cursor.getCount();
             i += result;
-            Log.d("loop: ",""+i);
             if (cursor.moveToFirst()) {
                 do {
-                    int id = cursor.getInt(0);
-                    ImageItem item = new ImageItem(cursor.getString(1),cursor.getString(2));
-                    Bitmap image = BitmapFactory.decodeResource(res, res.getIdentifier( "image_"+id , "drawable", context.getPackageName()));
-                    item.setImage(image);
+                    ImageItem item = new ImageItem(cursor.getString(1),cursor.getString(2),cursor.getInt(0));
                     itemList.add(item);
                 } while (cursor.moveToNext());
                 cursor.close();
             }
+            if(result < 100) break;
         }
         Log.d("RESULT SIZE",""+ itemList.size());
         return itemList;

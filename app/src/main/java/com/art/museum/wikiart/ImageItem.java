@@ -7,19 +7,13 @@ import android.graphics.Bitmap;
 public class ImageItem {
     private String name;
     private String link;
-    private Bitmap image;
+    private int idx;
 
-    public ImageItem(String name, String link) {
+    public ImageItem(String name, String link, int idx) {
         super();
         this.name = name;
         this.link = link;
-    }
-
-    public ImageItem(String name, String link, Bitmap image) {
-        super();
-        this.name = name;
-        this.link = link;
-        this.image = image;
+        this.idx = idx;
     }
 
     public String getName() {
@@ -38,11 +32,11 @@ public class ImageItem {
         this.link = link;
     }
 
-    public Bitmap getImage() {
-        return image;
+    public int getIndex() {
+        return idx;
     }
 
-    public void setImage(Bitmap image) {
-        this.image = image;
+    public void setImage(int idx) {
+        this.idx = idx;
     }
 }
