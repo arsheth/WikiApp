@@ -7,16 +7,14 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
+import com.art.museum.wikiart.R;
+import com.art.museum.wikiart.models.Constants;
+import com.art.museum.wikiart.models.ImageItem;
 
-import android.content.res.Resources;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import com.art.museum.wikiart.R;
-import com.art.museum.wikiart.ImageItem;
 import java.util.ArrayList;
 
 
@@ -96,26 +94,82 @@ public class DataStore extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
     }
 
-
-    public ArrayList<ImageItem> getImages() {
+    public ArrayList<ImageItem> search(String searchTerm) {
+        Log.d("SEARCH ", "search");
         ArrayList<ImageItem> itemList = new ArrayList<ImageItem>();
-        int result = 0;
-        int i=0;
-        while (i < 10000) {
-            String selectQuery = "SELECT idx, name, link, rank  FROM "+TABLE_NAME+" WHERE rank >=  " + i + " ORDER BY rank ASC LIMIT 100";
+        String selectQuery = "SELECT position, name, rank, link, image_id, artist_name, color, date, date_color, style, style_color, genre, genre_color from "+TABLE_NAME+" WHERE artist_name like '%" +
+                searchTerm.toLowerCase() + "%' COLLATE NOCASE ORDER BY position ASC LIMIT 100";
+        Cursor cursor = myDataBase.rawQuery(selectQuery, null);
+        if (cursor.moveToFirst()) {
+            do {
+                ImageItem image = new ImageItem();
+                image.setIndex(Integer.parseInt(cursor.getString(4)));
+                image.setName(cursor.getString(1));
+                image.setRank(Integer.parseInt(cursor.getString(2)));
+                image.setLink(cursor.getString(3));
+                image.setPosition(cursor.getInt(0));
+                image.setArtist(cursor.getString(5));
+                image.setColor(cursor.getString(6));
+                image.setDate(cursor.getString(7));
+                image.setdColor(cursor.getString(8));
+                image.setStyle(cursor.getString(9));
+                image.setsColor(cursor.getString(10));
+                image.setGente(cursor.getString(11));
+                image.setgColor(cursor.getString(12));
+                itemList.add(image);
+            } while (cursor.moveToNext());
+            cursor.close();
+        }
+        return itemList;
+    }
+
+    public ArrayList<ImageItem> getImages(int rank, int position) {
+        ArrayList<ImageItem> itemList = new ArrayList<ImageItem>();
+        int count;
+        if (rank < 1000) {
+            count = 1000;
+        } else {
+            count = 50;
+        }
+        int result = 0, i=0;
+        while (true) {
+            if (i == Constants.MAX_ITER * 5) {
+                break;
+            }
+            String selectQuery = "SELECT position, image_name, rank, link, image_id, artist_name, color, date, date_color, style, style_color, genre, genre_color FROM " + TABLE_NAME + " WHERE rank <= " + rank
+                    + " AND position >=  " + (position-count/(i+1)) + " AND position <" + (position + count) + " ORDER BY position ASC LIMIT 100";
             Cursor cursor = myDataBase.rawQuery(selectQuery, null);
             result = cursor.getCount();
-            i += result;
+            if ((result < 100)) {
+                count += count;
+                i++;
+                cursor.close();
+                continue;
+            }
             if (cursor.moveToFirst()) {
                 do {
-                    ImageItem item = new ImageItem(cursor.getString(1),cursor.getString(2),cursor.getInt(0));
-                    itemList.add(item);
+                    ImageItem image = new ImageItem();
+                    image.setIndex(Integer.parseInt(cursor.getString(4)));
+                    image.setName(cursor.getString(1));
+                    image.setRank(Integer.parseInt(cursor.getString(2)));
+                    image.setLink(cursor.getString(3));
+                    image.setPosition(cursor.getInt(0));
+                    image.setArtist(cursor.getString(5));
+                    image.setColor(cursor.getString(6));
+                    image.setDate(cursor.getString(7));
+                    image.setdColor(cursor.getString(8));
+                    image.setStyle(cursor.getString(9));
+                    image.setsColor(cursor.getString(10));
+                    image.setGente(cursor.getString(11));
+                    image.setgColor(cursor.getString(12));
+                    itemList.add(image);
                 } while (cursor.moveToNext());
                 cursor.close();
+                break;
             }
-            if(result < 100) break;
         }
         Log.d("RESULT SIZE",""+ itemList.size());
         return itemList;
     }
+
 }

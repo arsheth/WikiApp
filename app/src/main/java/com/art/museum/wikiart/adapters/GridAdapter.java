@@ -5,6 +5,8 @@ package com.art.museum.wikiart.adapters;
  */
 
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -13,8 +15,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.art.museum.data.DataStore;
-import com.art.museum.wikiart.GridRecyclerView;
-import com.art.museum.wikiart.ImageItem;
+import com.art.museum.wikiart.R;
+import com.art.museum.wikiart.models.ImageItem;
+import com.art.museum.wikiart.views.GridRecyclerView;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -23,7 +26,7 @@ import java.util.ArrayList;
 public class GridAdapter extends RecyclerView.Adapter<GridAdapter.ViewHolder>{
 
     public interface OnLongClickListener {
-        void onLongClick(final String url);
+        void onLongClick(final ImageItem item);
     }
 
     public interface OnClickListener {
@@ -34,12 +37,16 @@ public class GridAdapter extends RecyclerView.Adapter<GridAdapter.ViewHolder>{
     private Context context;
     private OnLongClickListener longClickListener;
     private OnClickListener listener;
-    public static final int totalSpan = 100;
+    public static final int totalSpan = 10;
     private int currentSpan;
-    private int spanConstant = 25;
+    private int spanConstant = 1;
     private GridRecyclerView grv;
     DataStore dataStore;
     private int focusedItem = 0;
+    private boolean artist_mode = false;
+    private boolean date_mode = false;
+    private boolean style_mode = false;
+    private boolean genre_mode = false;
 
     public GridAdapter(Context context,ArrayList<ImageItem> data,GridRecyclerView gv, DataStore dataStore, OnLongClickListener longClickListener, OnClickListener listener) {
         this.data = data;
@@ -57,20 +64,38 @@ public class GridAdapter extends RecyclerView.Adapter<GridAdapter.ViewHolder>{
         notifyDataSetChanged();
     }
 
+    public void setFilter(int mode) {
+        clear_modes();
+        switch(mode){
+            case 1:
+                artist_mode = true;
+                break;
+            case 2:
+                date_mode = true;
+                break;
+            case 3:
+                style_mode = true;
+                break;
+            case 4:
+                genre_mode = true;
+                break;
+            default:
+                clear_modes();
+
+        }
+        notifyDataSetChanged();
+    }
+
+    public void clear_modes(){
+        artist_mode = false;
+        date_mode = false;
+        style_mode = false;
+        genre_mode = false;
+    }
+
     public GridLayoutManager.SpanSizeLookup getScalableSpanSizeLookUp() {
         return scalableSpanSizeLookUp;
     }
-
-  /*  public int calculateRange() {
-        int start = ((GridLayoutManager) grv.getLayoutManager()).findFirstVisibleItemPosition();
-        int end = ((GridLayoutManager) grv.getLayoutManager()).findLastVisibleItemPosition();
-        if (start < 0)
-            start = 0;
-        if (end < 0)
-            end = 0;
-        return end - start;
-    } */
-
 
     private GridLayoutManager.SpanSizeLookup scalableSpanSizeLookUp = new GridLayoutManager.SpanSizeLookup() {
         @Override
@@ -84,20 +109,6 @@ public class GridAdapter extends RecyclerView.Adapter<GridAdapter.ViewHolder>{
         return currentSpan;
     }
 
-  /*  public void setCurrentSpan(int span) {
-        this.currentSpan = span;
-
-    }
-
-    public void delayedNotify(final int pos, final int range) {
-        grv.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                notifyItemRangeChanged(pos - range > 0 ? pos - range : 0, range * 2 < getItemCount() ? range * 2 : range);
-            }
-        }, 100);
-    }*/
-
     @Override
     public GridAdapter.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.grid_item_layout, viewGroup, false);
@@ -106,8 +117,7 @@ public class GridAdapter extends RecyclerView.Adapter<GridAdapter.ViewHolder>{
 
     @Override
     public void onBindViewHolder(GridAdapter.ViewHolder viewHolder, int i) {
-        //String url = data.get(i).getLink().toString();
-        //int index = data.get(i).getIndex();
+        viewHolder.itemView.setTag(i);
         String rid = "image_" + data.get(i).getIndex();
         viewHolder.bind(context,data.get(i),rid);
 
@@ -139,11 +149,24 @@ public class GridAdapter extends RecyclerView.Adapter<GridAdapter.ViewHolder>{
             image.setOnLongClickListener(new View.OnLongClickListener(){
                 @Override
                 public boolean onLongClick(View v){
-                    longClickListener.onLongClick(item.getLink());
+                    longClickListener.onLongClick(item);
                     return true;
                 }
             });
 
+            if(artist_mode) image.setColorFilter(Color.parseColor(item.getColor()), PorterDuff.Mode.MULTIPLY);
+            else if(date_mode) image.setColorFilter(Color.parseColor(item.getdColor()), PorterDuff.Mode.MULTIPLY);
+            else if(style_mode) image.setColorFilter(Color.parseColor(item.getsColor()), PorterDuff.Mode.MULTIPLY);
+            else if(genre_mode) image.setColorFilter(Color.parseColor(item.getgColor()), PorterDuff.Mode.MULTIPLY);
+            else image.clearColorFilter();
+           /* GradientDrawable drawable = (GradientDrawable) context.getResources().getDrawable(R.drawable.grid_items_border);
+            drawable.setColor(Color.parseColor(item.getColor()));
+            drawable.setAlpha(100);
+            image.setForeground(drawable); */
+
+            //image.setBackgroundResource(R.drawable.grid_items_border);
+            //GradientDrawable drawable = (GradientDrawable) image.getBackground();
+            //drawable.setColor(Color.parseColor(item.getColor()));
         }
 
     }

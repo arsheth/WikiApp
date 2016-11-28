@@ -10,11 +10,70 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.art.museum.wikiart.MainActivity">
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/card_recycler_view"
-        android:scrollbars="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:clickable="true"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:textSize="15dp"
+        android:paddingBottom="3dp"
+        android:id="@+id/progress" />
+   <LinearLayout
+       android:id="@+id/header"
+       android:orientation="vertical"
+       android:layout_width="match_parent"
+       android:paddingTop="8dp"
+       android:paddingLeft="16dp"
+       android:paddingRight="16dp"
+       android:layout_height="wrap_content">
+      <com.art.museum.wikiart.models.CustomSeekBar
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:id="@+id/seek_bar"
+          android:thumb="@drawable/shape_seek_bar_text_thumb"
+          android:thumbOffset="4dp"/>
+      <RelativeLayout
+          android:layout_width="fill_parent"
+          android:layout_height="wrap_content"
+          android:layout_gravity="center"
+          android:orientation="horizontal"
+          android:layout_alignParentStart="true">
+         <TextView
+             android:id="@+id/sliderStart"
+             android:paddingLeft="10dp"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:text="100" />
+
+         <TextView
+             android:id="@+id/sliderEnd"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:layout_alignParentRight="true"
+             android:paddingRight="10dp"
+             android:text="10000" />
+
+         <TextView
+             android:id="@+id/item_count"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:layout_centerHorizontal="true"
+             android:textAllCaps="true"
+             android:textSize="14sp" />
+      </RelativeLayout>
+      <TextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:id="@+id/position"
+          android:layout_gravity="center"
+          android:text="1" />
+
+   </LinearLayout>
+   <com.art.museum.wikiart.views.GridRecyclerView
+       android:id="@+id/card_recycler_view"
+       android:clickable="true"
+       android:layout_width="match_parent"
+       android:layout_height="match_parent"
+       android:layout_margin="10dp"
+       android:layout_below="@+id/header" />
 
 </RelativeLayout>

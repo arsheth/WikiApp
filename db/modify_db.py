@@ -16,19 +16,20 @@ try:
     
 	cur = con.cursor()
 
-	fo = open("ranks.csv", "r")
+	fo = open("genre.csv", "r")
 	line = fo.readline()
 	while line:
 		line = fo.readline()
-		line = line.replace("\r\n","")
+		line = line.decode("utf-8", "replace")
 		parts = line.split(',')
 		if len(parts) == 2:
 			#name = parts[0].replace("\r\n","")
 			#name = name.replace(".jpg","")
-			idx = int(parts[0])
-			rank = int(parts[1])
-			#print rank,name
-			cur.execute('update art set rank = ? where idx = ?',(rank,idx))
+			date = parts[0]
+			date_color = parts[1].replace("\r\n","")
+			#print name, artist, image
+			#print date, style, genre, image_id
+			cur.execute('update tsp set genre_color  = ? where genre = ?;',(date_color,date))
 	con.commit()
 except lite.Error, e:
     

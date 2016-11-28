@@ -10,6 +10,13 @@ public class ImageItem {
     private int idx;
     private int rank;
     private int position;
+    private String color;
+    private String date;
+    private String dColor;
+    private String style;
+    private String sColor;
+    private String genre;
+    private String gColor;
 
     public ImageItem(){
         super();
@@ -75,6 +82,54 @@ public class ImageItem {
     public void setPosition(int position) {
         this.position = position;
     }
+
+    public String getColor(){
+        return color;
+    }
+
+    public void setColor(String color){ this.color = color; }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    public String getdColor(){
+        return dColor;
+    }
+
+    public void setdColor(String dColor){ this.dColor = dColor; }
+
+    public String getStyle() {
+        return style;
+    }
+
+    public void setStyle(String style) {
+        this.style = style;
+    }
+
+    public String getsColor(){
+        return sColor;
+    }
+
+    public void setsColor(String sColor){ this.sColor = sColor; }
+
+    public String getGenre() {
+        return genre;
+    }
+
+    public void setGente(String genre) {
+        this.genre = genre;
+    }
+    public String getgColor(){
+        return gColor;
+    }
+
+    public void setgColor(String gColor){ this.gColor = gColor; }
+
 
     @Override
     public boolean equals(Object obj) {

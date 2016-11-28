@@ -1,4 +1,38 @@
-<?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
-
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools" tools:context=".MainActivity">
+    <item android:id="@+id/action_about_app" android:title="@string/action_about_app"
+        android:orderInCategory="100" app:showAsAction="never" />
+    <item android:id="@+id/help"
+        android:icon="@android:drawable/arrow_up_float"
+        android:title="Help"
+        app:showAsAction="collapseActionView" />
+    <item android:id="@+id/action_search"
+        android:title="Artist Search"
+        android:icon="@drawable/search"
+        app:actionViewClass="android.support.v7.widget.SearchView"
+        app:showAsAction="always"/>
+    <item android:id="@+id/filter"
+        android:title="Filter by"
+        app:showAsAction="collapseActionView">
+        <menu>
+            <group android:id="@+id/group"
+                android:title="Filter by"
+                android:checkableBehavior="single">
+                <item android:id="@+id/none"
+                    android:title="No filter"/>
+                <item android:id="@+id/artist_color"
+                    android:title="Artist"/>
+                <item android:id="@+id/date_color"
+                    android:title="Date"/>
+                <item android:id="@+id/style_color"
+                    android:title="Style"/>
+                <item android:id="@+id/genre_color"
+                    android:title="Genre"/>
+            </group>
+        </menu>
+    </item>
+    <item android:id="@+id/setGrid"
+        android:title="Set Grid Size"
+        app:showAsAction="collapseActionView"/>
 </menu>
