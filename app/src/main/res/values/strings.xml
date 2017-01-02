@@ -5,4 +5,21 @@
     <string name="db_path">data/data/com.art.museum.wikiart/databases/</string>
     <string name="table_name">tsp</string>
     <string name="action_about_app">About the app</string>
+    <string name="description">
+        "ArtBrowse is an assemblage of 10000 paintings organized not by artist or time period but by similarity. The content is provided by Wikiart.org<br/>
+        Click on something you like, then look deeper to discover related works as seen through computer vision and combinatorial optimization.<br/>
+        This app is a demonstration of our DeepBrowse approach for efficiently scanning through large lists of items in the absence of a predefined hierarchy.<br/>
+        DeepBrowse is defined by the interaction of two fixed, globally-defined permutations on the space of objects: one ordering the items by similarity, the second based on magnitude or importance.<br/>
+        Constructing good similarity orders of large collections of complex objects is a challenging task.<br/>
+        We use graph embeddings to provide the features to order the paintings by similarity.<br/>
+        The problem of ordering items in a list by similarity is natural modeled by the Traveling Salesman Problem (TSP), which seeks the minimum-cost tour visiting the complete set of items.<br/>
+        Try our other DeepBrowse apps for Wikipedia, movies, and words.<br/>
+        ArtBrowse is a product of the <a href = "https://sites.google.com/site/datascienceslab/">Data Science Laboratory</a>, Dept. of Computer Science, Stony Brook University.<br/>"</string>
 </resources>
+<!--    ArtBrowse facilitates the users to browse through one of the largest digital fine art collections.\r\n
+    The content is provided by Wikiart.org\r\n
+    From the menu on the right side of the screen, viewers can choose to order the paintings by Similarity, Diversity or Popularity using the 'Order By' submenu.\n
+    The 'Highlight' menu allows the users to tag the paintings according to artists, style, genre and year.\n
+    Artists is the default mode.\nUsers can click on any painting and use the slider to select the number of paintings to be displayed which are closer to the selected image.\n
+    The 'Search' icon lets the users to search the artwork of any artist.\nA long click on any image links the thumbnail to the original page on Wikiart.org so the painting can be viewed in high resolution with all the features.\n"
+   -->

@@ -13,26 +13,43 @@
         app:actionViewClass="android.support.v7.widget.SearchView"
         app:showAsAction="always"/>
     <item android:id="@+id/filter"
-        android:title="Filter by"
+        android:title="Highlight"
         app:showAsAction="collapseActionView">
         <menu>
-            <group android:id="@+id/group"
-                android:title="Filter by"
-                android:checkableBehavior="single">
-                <item android:id="@+id/none"
-                    android:title="No filter"/>
+            <group android:id="@+id/group">
+               <!-- android:checkableBehavior="single"> -->
                 <item android:id="@+id/artist_color"
-                    android:title="Artist"/>
+                    android:title="Artist"
+                    android:checkable="true"
+                    android:checked="true"/>
                 <item android:id="@+id/date_color"
-                    android:title="Date"/>
+                    android:title="Date"
+                    android:checkable="true"/>
                 <item android:id="@+id/style_color"
-                    android:title="Style"/>
+                    android:title="Style"
+                    android:checkable="true"/>
                 <item android:id="@+id/genre_color"
-                    android:title="Genre"/>
+                    android:title="Genre"
+                    android:checkable="true"/>
             </group>
         </menu>
     </item>
-    <item android:id="@+id/setGrid"
+    <item android:id="@+id/order"
+        android:title="Order by"
+        app:showAsAction="collapseActionView">
+        <menu>
+            <group android:id="@+id/group1"
+                android:checkableBehavior="single">
+                <item android:id="@+id/tsp"
+                    android:title="Similarity"/>
+                <item android:id="@+id/prime"
+                    android:title="Diversity"/>
+                <item android:id="@+id/popular"
+                    android:title="Popularity"/>
+            </group>
+        </menu>
+    </item>
+   <!-- <item android:id="@+id/setGrid"
         android:title="Set Grid Size"
-        app:showAsAction="collapseActionView"/>
+        app:showAsAction="collapseActionView"/> -->
 </menu>
